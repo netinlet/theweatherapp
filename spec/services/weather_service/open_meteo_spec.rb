@@ -39,4 +39,10 @@ RSpec.describe WeatherService::OpenMateo, type: :services do
       end
     end
   end
+
+  describe "protected - make_request" do
+    it "raises an error if the API returns an error" do
+      expect { subject.send(:make_request, URI("http://example.com/api/error")) }.to raise_error("Error making request to http://example.com/api/error: unexpected token at '<!doctype html>\n<html>\n<head>\n  '")
+    end
+  end
 end

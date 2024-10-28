@@ -49,7 +49,11 @@ module WeatherService
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == "https"
       http.read_timeout = @timeout
-      response = http.get(uri.path + "?" + uri.query)
+      full_path = uri.path
+      if uri.query
+        full_path += "?" + uri.query
+      end
+      response = http.get(full_path)
       JSON.parse(response.body)
     rescue => e
       raise "Error making request to #{uri}: #{e.message}"
