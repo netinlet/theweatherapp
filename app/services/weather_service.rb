@@ -14,4 +14,8 @@ module WeatherService
     # provide a default implementation if not specified
     @weather_provider ||= ::WeatherService::OpenMateo.new
   end
+
+  def get_current_weather(postal_code)
+    weather_provider.get_current_weather(postal_code)
+  end
 end
