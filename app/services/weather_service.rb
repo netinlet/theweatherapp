@@ -15,6 +15,10 @@ module WeatherService
     @weather_provider ||= ::WeatherService::OpenMateo.new
   end
 
+  def extract_postal_code(address)
+    address&.match(/(?<!\d)\d{5}(?!\d)/)&.to_a&.last
+  end
+
   def get_current_weather(postal_code)
     weather_provider.get_current_weather(postal_code)
   end

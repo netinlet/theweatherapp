@@ -1,10 +1,22 @@
 class WeatherController < ApplicationController
   def index
-    @address = params[:address] || "1 Apple Park Way. Cupertino, CA 95014"
-    postal_code = @address.match(/\d{5}/)&.to_a&.last
+    @address = params[:address] # || "1 Apple Park Way. Cupertino, CA 95014"
+    postal_code = @address&.match(/\d{5}/)&.to_a&.last
+
+    # if both are blank, we have no input
+    if postal_code.blank? && @address.blank?
+      render :index
+      return
+    elsif postal_code.blank?
+      # we had input but it's not a valid postal code
+      flash[:error] = "Please ensure the address is valid and includes a valid postal code"
+      render :index
+      return
+    end
+
     logger.info "postal_code: #{postal_code}"
     @cache_hit = false
-    @weather = {}
+    @weather = nil
 
     begin
       logger.info "Checking cache for #{postal_code}"
@@ -19,11 +31,7 @@ class WeatherController < ApplicationController
     rescue => e
       logger.error "Error fetching weather data: #{e.message}"
       flash[:error] = "Error fetching weather data: #{e.message}"
-      @weather = {}
-    end
-
-    if @weather.empty?
-      flash[:error] = "Please ensure the address is valid and includes a valid postal code"
+      @weather = nil
     end
 
     render :index
