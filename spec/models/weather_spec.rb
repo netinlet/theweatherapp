@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Weather, type: :model do
-  let(:valid_forecast) { (0..3).map { |n| WeatherForecast.new(date: n.days.from_now.iso8601, temperature_max: 85, temperature_min: 73, precipitation_probability: 0) } }
+  let(:valid_forecast) { (0..3).map { |n| WeatherForecast.new(date: n.days.from_now.to_date.iso8601, temperature_max: 85, temperature_min: 73, precipitation_probability: 0) } }
 
   describe "validations" do
     it { should validate_presence_of(:postal_code) }
@@ -12,8 +12,7 @@ RSpec.describe Weather, type: :model do
     it { should validate_presence_of(:current_precipitation) }
     it { should validate_presence_of(:forecast) }
 
-    let(:valid_forecast) { (0..3).map { |n| WeatherForecast.new(date: n.days.from_now.iso8601, temperature_max: 85, temperature_min: 73, precipitation_probability: 0) } }
-    let(:invalid_forecast) { [WeatherForecast.new(date: Date.today.iso8601, temperature_max: nil, temperature_min: 73, precipitation_probability: 0)] }
+    let(:invalid_forecast) { [WeatherForecast.new(date: Date.today.to_date.iso8601, temperature_max: nil, temperature_min: 73, precipitation_probability: 0)] }
 
     it "validates that the forecast is valid" do
       weather = described_class.new(postal_code: "12345", latitude: 37.7749, longitude: -122.4194, current_temperature: 75, temperature_unit: "F", current_precipitation: 0, forecast: valid_forecast)
@@ -56,7 +55,7 @@ RSpec.describe Weather, type: :model do
     let(:subject) { described_class.new(postal_code: "12345", latitude: 37.7749, longitude: -122.4194, current_temperature: 75, temperature_unit: "F", current_precipitation: 0, forecast: valid_forecast) }
 
     it "serializes to JSON" do
-      expect(JSON.parse(described_class.dump(subject))).to eq(subject.to_h)
+      expect(JSON.parse(described_class.dump(subject))).to eq(subject.to_h.deep_stringify_keys)
     end
 
     it "deserializes from JSON" do
@@ -68,7 +67,7 @@ RSpec.describe Weather, type: :model do
         current_temperature: subject.current_temperature,
         temperature_unit: subject.temperature_unit,
         current_precipitation: subject.current_precipitation,
-        forecast: subject.forecast.map(&:to_h)
+        forecast: subject.forecast.map { |f| f.to_h.symbolize_keys }
       })
     end
   end

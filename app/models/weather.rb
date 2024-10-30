@@ -5,7 +5,7 @@ class Weather
   attr_accessor :postal_code, :latitude, :longitude, :current_temperature, :temperature_unit, :current_precipitation, :cache_hit
 
   def self.load(payload)
-    data = JSON.parse(payload)
+    data = JSON.parse(payload, symbolize_names: true)
     new(data)
   end
 
