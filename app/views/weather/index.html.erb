@@ -1,79 +1,85 @@
-<div class="flash">
-  <% if flash[:error] %>
-    <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
-      <%= flash[:error] %>
-    </div>
-  <% end %>
-</div>
-<div class="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-  <form class="space-y-6" action="<%= weather_index_path %>" method="get">
-    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Get your weather forecast</h5>
-    <div>
-      <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter an address</label>
-      <input type="address" name="address" id="address"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-        placeholder="1 Apple Park Way. Cupertino, CA 95014" required />
-    </div>
-    <div class="flex items-start">
-      <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-        Get the weather
-      </button>
-    </div>
-  </form>
-</div>
-<% if @weather %>
-<div class="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
-  <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="weather">
-    <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-4 text-center">Current Weather for <%= @weather[:postal_code] %></h2>
-    <dl class="grid grid-cols-1 p-2 mx-auto text-gray-900 dark:text-white sm:p-8">
-      <div class="flex flex-col items-center justify-center">
-        <dt class="mb-2 text-3xl font-extrabold">
-          <%= @weather[:current_temperature] %>&nbsp;<%= @weather[:temperature_unit] %>
-        </dt>
-        <dd class="text-gray-500 dark:text-gray-400">Current temperature</dd>
+<div class="flex flex-col items-center">
+  <div class="flash">
+    <% if flash[:error] %>
+      <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+        <%= flash[:error] %>
       </div>
-      <div class="flex flex-col items-center justify-center">
-        <dt class="mb-2 text-3xl font-extrabold">
-          <%= @weather[:current_precipitation] %>&nbsp;<%= @weather[:precipitation_unit] %>&nbsp;%
-        </dt>
-        <dd class="text-gray-500 dark:text-gray-400">Chance of rain</dd>
+      <% end %>
+  </div>
+  <div class="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <form class="space-y-6" action="<%= weather_index_path %>" method="get">
+      <h5 class="text-xl font-medium text-gray-900 dark:text-white">Get your weather forecast</h5>
+      <div>
+        <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter an
+          address</label>
+        <input type="address" name="address" id="address"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          placeholder="1 Apple Park Way. Cupertino, CA 95014" required />
       </div>
-    </dl>
-    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mt-4 text-center">7 Day Forecast</h2>
-    <dl class="grid grid-cols-1 gap-4 p-2 mx-auto text-gray-900 dark:text-white sm:p-8">
-      <% (@weather[:forecast] || []).each do |day| %>
-        <div class="flex flex-col">
-          <dt class="mb-4 mt-4 text-xl font-medium text-center">
-            <%= Date.parse(day[:date]).to_formatted_s(:dow_long) %>
-          </dt>
-          <div class="flex justify-between">
-            <div class="flex flex-col items-center">
-              <dt class="mb-2 text-3xl font-extrabold">
-                <%= day[:temperature_max] %>&nbsp;<%= @weather[:temperature_unit] %>
-              </dt>
-              <dd class="text-gray-500 dark:text-gray-400">High</dd>
-            </div>
-            <div class="flex flex-col items-center">
-              <dt class="mb-2 text-3xl font-extrabold">
-                <%= day[:temperature_min] %>&nbsp;<%= @weather[:temperature_unit] %>
-              </dt>
-              <dd class="text-gray-500 dark:text-gray-400">Low</dd>
-            </div>
+      <div class="flex items-start">
+        <button type="submit"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Get the weather
+        </button>
+      </div>
+    </form>
+  </div>
+  <% if @weather %>
+    <div class="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
+      <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="weather">
+        <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-4 text-center">Current Weather for <%=
+            @weather[:postal_code] %>
+        </h2>
+        <dl class="grid grid-cols-1 p-2 mx-auto text-gray-900 dark:text-white sm:p-8">
+          <div class="flex flex-col items-center justify-center">
+            <dt class="mb-2 text-3xl font-extrabold">
+              <%= @weather[:current_temperature] %>&nbsp;<%= @weather[:temperature_unit] %>
+            </dt>
+            <dd class="text-gray-500 dark:text-gray-400">Current temperature</dd>
           </div>
-        </div>
-        <div class="flex flex-col items-center">
-          <dt class="mb-2 text-3xl font-extrabold">
-            <%= day[:precipitation_probability] %>&nbsp;%
-          </dt>
-          <dd class="text-gray-500 dark:text-gray-400">Chance of rain</dd>
-        </div>
+          <div class="flex flex-col items-center justify-center">
+            <dt class="mb-2 text-3xl font-extrabold">
+              <%= @weather[:current_precipitation] %>&nbsp;<%= @weather[:precipitation_unit] %>&nbsp;%
+            </dt>
+            <dd class="text-gray-500 dark:text-gray-400">Chance of rain</dd>
+          </div>
+        </dl>
         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-        <% end %>
-    </dl>
-    <h4 class="text-sm font-light <%= @cache_hit ? "text-green-500" : "text-red-500" %> text-center">
-      <%= @cache_hit ? "Cache hit for #{@weather[:postal_code]}" : "Cache miss for #{@weather[:postal_code]}" %>
-    </h4>
-  </div>
-  </div>
-<% end %>
+        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mt-4 text-center">7 Day Forecast</h2>
+        <dl class="grid grid-cols-1 gap-4 p-2 mx-auto text-gray-900 dark:text-white sm:p-8">
+          <% (@weather[:forecast] || []).each do |day| %>
+            <div class="flex flex-col">
+              <dt class="mb-4 mt-4 text-xl font-medium text-center">
+                <%= Date.parse(day[:date]).to_formatted_s(:dow_long) %>
+              </dt>
+              <div class="flex justify-between">
+                <div class="flex flex-col items-center">
+                  <dt class="mb-2 text-3xl font-extrabold">
+                    <%= day[:temperature_max] %>&nbsp;<%= @weather[:temperature_unit] %>
+                  </dt>
+                  <dd class="text-gray-500 dark:text-gray-400">High</dd>
+                </div>
+                <div class="flex flex-col items-center">
+                  <dt class="mb-2 text-3xl font-extrabold">
+                    <%= day[:temperature_min] %>&nbsp;<%= @weather[:temperature_unit] %>
+                  </dt>
+                  <dd class="text-gray-500 dark:text-gray-400">Low</dd>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col items-center">
+              <dt class="mb-2 text-3xl font-extrabold">
+                <%= day[:precipitation_probability] %>&nbsp;%
+              </dt>
+              <dd class="text-gray-500 dark:text-gray-400">Chance of rain</dd>
+            </div>
+            <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+            <% end %>
+        </dl>
+        <h4 class="text-sm font-light <%= @cache_hit ? " text-green-500" : "text-red-500" %> text-center">
+          <%= @cache_hit ? "Cache hit for #{@weather[:postal_code]}" : "Cache miss for #{@weather[:postal_code]}" %>
+        </h4>
+      </div>
+    </div>
+    <% end %>
+</div>

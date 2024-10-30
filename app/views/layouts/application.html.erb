@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
 
 <head>
   <title>
@@ -21,16 +21,21 @@
   <%= javascript_importmap_tags %>
 </head>
 
-<body>
+<body class="bg-gray-50 dark:bg-gray-900">
   <div class="antialiased bg-gray-50 dark:bg-gray-900 h-full">
-    <nav
-      class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
       <div class="flex flex-wrap justify-between items-center">
         <div class="flex justify-start items-center">
-          <a href="https://www.linkedin.com/in/dougbryant/" class="flex items-center justify-between mr-4">
+          <a href="/" class="flex items-center justify-between mr-4">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">The Weather App</span>
           </a>
         </div>
+        <div class="flex items-center">
+          <a href="https://www.linkedin.com/in/dougbryant/" class="flex items-center justify-between mr-4">
+            <span class="self-center text-xs font-medium whitespace-nowrap dark:text-white">by Doug Bryant</span>
+          </a>
+        </div>
+      </div>
     </nav>
     <main class="p-4 h-max pt-20 h-full">
       <div class="min-h-max h-screen">

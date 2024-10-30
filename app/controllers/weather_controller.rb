@@ -1,7 +1,7 @@
 class WeatherController < ApplicationController
   def index
-    @address = params[:address] # || "1 Apple Park Way. Cupertino, CA 95014"
-    postal_code = @address&.match(/\d{5}/)&.to_a&.last
+    @address = params[:address]
+    postal_code = WeatherService.extract_postal_code(@address)
 
     # if both are blank, we have no input
     if postal_code.blank? && @address.blank?
