@@ -6,6 +6,7 @@ class Weather
 
   def self.load(payload)
     data = JSON.parse(payload, symbolize_names: true)
+    data[:forecast] = data[:forecast].map { |f| WeatherForecast.load(f) }
     new(data)
   end
 
@@ -37,6 +38,8 @@ class Weather
   def forecast=(value)
     @forecast = Array(value)
   end
+
+  alias_method :cache_hit?, :cache_hit
 
   validates :postal_code, presence: true
   validates :latitude, presence: true
@@ -72,8 +75,8 @@ class Weather
       end
     rescue => e
       logger.error "Error fetching weather data: #{e.message}"
-      weather = new
-      weather.errors.add(:base, "Error fetching weather data: #{e.message}")
+      weather = new(postal_code: postal_code)
+      weather
     end
     weather
   end
@@ -82,6 +85,7 @@ class Weather
 
   def forecasts_are_valid
     forecast.each do |forecast|
+      logger.info "forecast: #{forecast.inspect}"
       unless forecast.valid?
         errors.add(:forecast, "contains invalid forecast")
       end
